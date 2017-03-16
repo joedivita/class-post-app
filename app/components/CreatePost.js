@@ -87,6 +87,11 @@ class CreatePost extends React.Component {
   }
 }
 
+// CreatePost contextTypes
+// Needed to get reference to router context
+// so that we can redirect the user programmatically1
+// with react router.
+
 CreatePost.contextTypes = {
   router: React.PropTypes.any
 };

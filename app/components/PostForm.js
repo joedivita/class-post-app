@@ -40,7 +40,7 @@ class PostForm extends React.Component {
             id='title'
             type='text'
             onChange={(event) => this.updateInput(event)}
-            value={this.state.title}
+            defaultValue={this.props.defaultTitle}
             required
           />
         </div>
@@ -50,7 +50,7 @@ class PostForm extends React.Component {
             id='category'
             type='text'
             onChange={(event) => this.updateInput(event)}
-            value={this.state.category}
+            defaultValue={this.props.defaultCategory}
             required
           />
         </div>

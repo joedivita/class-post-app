@@ -79,6 +79,8 @@ class CreatePost extends React.Component {
         <PostForm
           loading={this.state.loading}
           action={(newPostData) => this.saveNewPost(newPostData)}
+          defaultTitle={'Sample Title'}
+          defaultCategory={'Sample Category'}
         />
       </div>
     );

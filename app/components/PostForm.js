@@ -20,8 +20,8 @@ class PostForm extends React.Component {
 
   initializeState() {
     this.setState({
-      title: 'Foo',
-      category: 'Bar'
+      title: this.props.defaultTitle || '',
+      category: this.props.defaultCategory || ''
     });
   }
 
@@ -68,11 +68,15 @@ class PostForm extends React.Component {
 
 // Props PostForm component
 // Requires an "action" function
-// Optional "loading" boolean value
+// Optional "loading" boolean
+// Optional "defaultTitle" string
+// Optional "defaultCategory" string
 
 PostForm.propTypes = {
   action: React.PropTypes.func.isRequired,
-  loading: React.PropTypes.bool
+  loading: React.PropTypes.bool,
+  defaultTitle: React.PropTypes.string,
+  defaultCategory: React.PropTypes.string
 };
 
 export { PostForm };

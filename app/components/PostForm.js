@@ -41,6 +41,7 @@ class PostForm extends React.Component {
             type='text'
             onChange={(event) => this.updateInput(event)}
             value={this.state.title}
+            required
           />
         </div>
         <div className='form-row'>
@@ -50,6 +51,7 @@ class PostForm extends React.Component {
             type='text'
             onChange={(event) => this.updateInput(event)}
             value={this.state.category}
+            required
           />
         </div>
         <div className='form-row'>

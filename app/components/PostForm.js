@@ -1,16 +1,9 @@
 import * as React from 'react';
+import { Button } from 'antd';
 
 class PostForm extends React.Component {
-  initializeState() {
-    this.setState({
-      title: 'Foo',
-      category: 'Bar'
-    });
-  }
 
-  componentWillMount() {
-    this.initializeState();
-  }
+  // Form Event Handlers
 
   updateInput(event) {
     const newState = {};
@@ -18,9 +11,29 @@ class PostForm extends React.Component {
     this.setState(newState);
   }
 
+  handleSubmitForm(event) {
+    event.preventDefault();
+    this.props.action(this.state);
+  }
+
+  // Initial State
+
+  initializeState() {
+    this.setState({
+      title: 'Foo',
+      category: 'Bar'
+    });
+  }
+
+  // Lifecycle Methods
+
+  componentWillMount() {
+    this.initializeState();
+  }
+
   render() {
     return (
-      <form onSubmit={() => this.props.action(this.state)}>
+      <form onSubmit={(event) => this.handleSubmitForm(event)}>
         <div className='form-row'>
           <label htmlFor='title'>Title:</label><br/>
           <input
@@ -30,7 +43,6 @@ class PostForm extends React.Component {
             value={this.state.title}
           />
         </div>
-
         <div className='form-row'>
           <label htmlFor='category'>Category:</label><br/>
           <input
@@ -40,17 +52,27 @@ class PostForm extends React.Component {
             value={this.state.category}
           />
         </div>
-
         <div className='form-row'>
-          <button type='submit'>Create Post</button>
+          <Button
+            type='primary'
+            loading={this.props.loading}
+            htmlType='submit'
+          >
+            Create Post
+          </Button>
         </div>
       </form>
     );
   }
 }
 
+// Props PostForm component
+// Requires an "action" function
+// Optional "loading" boolean value
+
 PostForm.propTypes = {
-  action: React.PropTypes.func.isRequired
+  action: React.PropTypes.func.isRequired,
+  loading: React.PropTypes.bool
 };
 
 export { PostForm };

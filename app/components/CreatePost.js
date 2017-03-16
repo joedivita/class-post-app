@@ -1,25 +1,85 @@
 import * as React from 'react';
 import { PostForm } from './PostForm';
 import * as axios from 'axios';
+import { notification } from 'antd';
 
 class CreatePost extends React.Component {
-  saveNewPost(newPostData) {
-    console.log('create post form submitted', newPostData);
+
+  // Create Post User Feedback
+
+  sendSuccessNotification() {
+    notification['success']({
+      message: 'Success!',
+      description: 'Yay! Your new post has been created successfully.',
+    });
+  }
+
+  sendErrorNotification() {
+    notification['error']({
+      message: 'Uh Oh',
+      description: 'An unexpected error occurred, please try again.',
+    });
+  }
+
+  redirectToPosts() {
+    this.context.router.push('/posts');
+  }
+
+  startLoading(callback, args) {
+    this.setState({
+      loading: true
+    }, () => callback(args));
+  }
+
+  endLoading() {
+    this.setState({
+      loading: false,
+    });
+  }
+
+  // Data Request Methods
+
+  sendNewPostRequest(newPostData) {
     axios.post('/posts', newPostData)
       .then((data) => {
-        console.log('success', data);
-        this.context.router.push('/posts');
+        this.endLoading();
+        this.sendSuccessNotification();
+        this.redirectToPosts();
       })
       .catch((error) => {
-        console.log('error', error);
+        this.endLoading();
+        this.sendErrorNotification();
       });
+  }
+
+  saveNewPost(newPostData) {
+    this.startLoading(() =>
+      this.sendNewPostRequest(newPostData)
+    );
+  }
+
+  // Initial State
+
+  initializeState() {
+    this.setState({
+      loading: false
+    });
+  }
+
+  // Lifecycle Methods
+
+  componentWillMount() {
+    this.initializeState();
   }
 
   render() {
     return (
       <div>
         <h2>New Post</h2>
-        <PostForm action={(newPostData) => this.saveNewPost(newPostData)} />
+        <PostForm
+          loading={this.state.loading}
+          action={(newPostData) => this.saveNewPost(newPostData)}
+        />
       </div>
     );
   }

@@ -1,0 +1,12 @@
+body {
+  background: #ececec;
+  font-family: Helvetica;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  margin: 30px 50px;
+  background: #fff;
+  padding: 50px 40px;
+}

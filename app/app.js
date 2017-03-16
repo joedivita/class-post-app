@@ -1,3 +1,4 @@
+import './styles/app.css';
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';

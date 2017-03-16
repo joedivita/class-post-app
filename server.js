@@ -14,6 +14,15 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 app.use(express.static("./public"));
 
+app.post('/posts', function(req, res) {
+  setTimeout(function(){
+    res.json({
+      title: req.body.title,
+      category: req.body.category
+    });
+  }, 1000);
+});
+
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/app.html');
 });

@@ -1,0 +1,23 @@
+.header {
+  background: #fff;
+}
+
+.header ul {
+  list-style: none;
+  margin: 0;
+}
+
+.header ul li {
+  display: inline-block;
+  padding: 30px 20px;
+}
+
+.header ul li a {
+  color: rgba(0,0,0,.65);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.header ul li a.active {
+  color: #108ee9;
+}

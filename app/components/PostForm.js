@@ -36,7 +36,7 @@ class PostForm extends React.Component {
     this.setState({
       title: this.props.defaultTitle || '',
       category: this.props.defaultCategory || '',
-      date: this.props.defaultDate || ''
+      date: this.props.defaultDate || moment()
     });
   }
 

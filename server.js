@@ -20,7 +20,7 @@ app.post('/posts', function(req, res) {
       title: req.body.title,
       category: req.body.category
     });
-  }, 1000);
+  }, 2000);
 });
 
 app.get('/', function(req, res) {

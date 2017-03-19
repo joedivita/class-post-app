@@ -1,64 +1,59 @@
 import * as React from 'react';
 import { PostForm } from './PostForm';
-import * as axios from 'axios';
 import { notification } from 'antd';
+import * as axios from 'axios';
 
 class CreatePost extends React.Component {
 
   // Create Post User Feedback
 
+  startLoading() {
+    this.setState({
+      loading: true
+    });
+  }
+
+  endLoading() {
+    this.setState({
+      loading: false
+    });
+  }
+
+  redirectToPosts() {
+    this.context.router.push('posts');
+  }
+
   sendSuccessNotification() {
     notification['success']({
-      message: 'Success!',
-      description: 'Yay! Your new post has been created successfully.',
+      message: 'Yayyy!!',
+      description: 'Your post has been created.',
     });
   }
 
   sendErrorNotification() {
     notification['error']({
       message: 'Uh Oh',
-      description: 'An unexpected error occurred, please try again.',
-    });
-  }
-
-  redirectToPosts() {
-    this.context.router.push('/posts');
-  }
-
-  startLoading(callback, args) {
-    this.setState({
-      loading: true
-    }, () => callback(args));
-  }
-
-  endLoading() {
-    this.setState({
-      loading: false,
+      description: 'Something went wrong, please try again.',
     });
   }
 
   // Data Request Methods
 
-  sendNewPostRequest(newPostData) {
-    axios.post('/posts', newPostData)
-      .then((data) => {
-        this.endLoading();
+  createPost(postObj) {
+    this.startLoading();
+    axios.post('/posts', postObj)
+      .then(() => {
         this.sendSuccessNotification();
+        this.endLoading();
         this.redirectToPosts();
       })
       .catch((error) => {
-        this.endLoading();
         this.sendErrorNotification();
+        this.endLoading();
       });
   }
 
-  saveNewPost(newPostData) {
-    this.startLoading(() =>
-      this.sendNewPostRequest(newPostData)
-    );
-  }
-
-  // Initial State
+  // Setting Initial State
 
   initializeState() {
     this.setState({
@@ -78,12 +73,13 @@ class CreatePost extends React.Component {
         <h2>New Post</h2>
         <PostForm
           loading={this.state.loading}
-          action={(newPostData) => this.saveNewPost(newPostData)}
-          defaultTitle={'Sample Title'}
-          defaultCategory={'Sample Category'}
+          submitAction={(postObj) => this.createPost(postObj)}
+          defaultTitle={'Foobar'}
+          defaultCategory={'Programming'}
+          defaultDate={'2017-03-05'}
         />
       </div>
-    );
+    )
   }
 }
 
@@ -91,7 +87,6 @@ class CreatePost extends React.Component {
 // Needed to get reference to router context
 // so that we can redirect the user programmatically
 // with react router.
-
 CreatePost.contextTypes = {
   router: React.PropTypes.any
 };

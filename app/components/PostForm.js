@@ -1,27 +1,42 @@
 import * as React from 'react';
-import { Button } from 'antd';
+import { Select, Button, DatePicker } from 'antd';
+import moment from 'moment';
+const Option = Select.Option;
 
 class PostForm extends React.Component {
 
   // Form Event Handlers
 
-  updateInput(event) {
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.submitAction(this.state);
+  }
+
+  handleUpdateTextInput(event) {
     const newState = {};
     newState[event.target.id] = event.target.value;
     this.setState(newState);
   }
 
-  handleSubmitForm(event) {
-    event.preventDefault();
-    this.props.action(this.state);
+  handleUpdateCategory(newVal) {
+    this.setState({
+      category: newVal
+    });
   }
 
-  // Initial State
+  handleUpdateDate(newValMoment, newValString) {
+    this.setState({
+      date: newValString
+    });
+  }
+
+  // Setting Initial State
 
   initializeState() {
     this.setState({
       title: this.props.defaultTitle || '',
-      category: this.props.defaultCategory || ''
+      category: this.props.defaultCategory || '',
+      date: this.props.defaultDate || ''
     });
   }
 
@@ -33,52 +48,67 @@ class PostForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={(event) => this.handleSubmitForm(event)}>
-        <div className='form-row'>
-          <label htmlFor='title'>Title:</label><br/>
-          <input
-            id='title'
-            type='text'
-            onChange={(event) => this.updateInput(event)}
-            defaultValue={this.props.defaultTitle}
-            required
-          />
-        </div>
-        <div className='form-row'>
-          <label htmlFor='category'>Category:</label><br/>
-          <input
-            id='category'
-            type='text'
-            onChange={(event) => this.updateInput(event)}
-            defaultValue={this.props.defaultCategory}
-            required
-          />
-        </div>
-        <div className='form-row'>
-          <Button
-            type='primary'
-            loading={this.props.loading}
-            htmlType='submit'
-          >
-            Create Post
-          </Button>
-        </div>
-      </form>
-    );
+      <div>
+        <form onSubmit={(event) => this.handleSubmit(event)}>
+          <div className='form-row'>
+            <label htmlFor='title'>Title</label><br/>
+            <input
+              defaultValue={this.state.title}
+              type='text'
+              id='title'
+              onChange={(event) => this.handleUpdateTextInput(event)}
+            />
+          </div>
+
+          <div className='form-row'>
+            <label htmlFor='category'>Category</label><br/>
+            <Select
+              defaultValue={this.state.category}
+              style={{ width: 120 }}
+              onChange={(newVal) => this.handleUpdateCategory(newVal)}
+            >
+              <Option value="Programming">Programming</Option>
+              <Option value="Javascript">Javascript</Option>
+              <Option value="React">React</Option>
+            </Select>
+          </div>
+
+          <div className='form-row'>
+            <DatePicker
+              defaultValue={moment(this.state.date)}
+              onChange={(newValMoment, newValString) =>
+                this.handleUpdateDate(newValMoment, newValString)
+              }
+            />
+          </div>
+
+          <div className='form-row'>
+            <Button
+              type='primary'
+              htmlType='submit'
+              loading={this.props.loading}
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </div>
+    )
   }
 }
 
-// Props PostForm component
-// Requires an "action" function
-// Optional "loading" boolean
-// Optional "defaultTitle" string
-// Optional "defaultCategory" string
-
+// Props for PostForm component
+// Requires a "submitAction" function
+// Optional "loading" boolean value
+// Optional "defaultTitle" string value
+// Optional "defaultCategory" string value
+// Optional "defaultDate" string value
 PostForm.propTypes = {
-  action: React.PropTypes.func.isRequired,
+  submitAction: React.PropTypes.func.isRequired,
   loading: React.PropTypes.bool,
   defaultTitle: React.PropTypes.string,
-  defaultCategory: React.PropTypes.string
+  defaultCategory: React.PropTypes.string,
+  defaultDate: React.PropTypes.string
 };
 
 export { PostForm };
